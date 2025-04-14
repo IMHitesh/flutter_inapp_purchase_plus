@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inapp_purchase_plus/store.dart';
 import 'package:http/http.dart' as http;
 import 'package:platform/platform.dart';
 
-import 'store.dart';
 import 'modules.dart';
 import 'utils.dart';
 
