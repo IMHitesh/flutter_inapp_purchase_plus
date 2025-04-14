@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
+import 'package:flutter_inapp_purchase_plus/flutter_inapp_purchase.dart';
 
 void main() => runApp(new MyApp());
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Flutter Inapp Plugin by dooboolab'),
+            title: Text('Flutter Inapp Plugin by Noble App Solutions'),
           ),
           body: InApp()),
     );

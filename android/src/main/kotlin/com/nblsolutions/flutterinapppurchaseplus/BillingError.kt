@@ -1,4 +1,4 @@
-package com.dooboolab.flutterinapppurchase
+package com.nblsolutions.flutterinapppurchaseplus
 
 import android.util.Log
 import com.android.billingclient.api.BillingClient.BillingResponseCode

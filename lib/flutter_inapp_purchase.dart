@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:platform/platform.dart';
 
-import 'Store.dart';
+import 'store.dart';
 import 'modules.dart';
 import 'utils.dart';
 
@@ -294,6 +294,18 @@ class FlutterInappPurchase {
         code: _platform.operatingSystem, message: "platform not supported");
   }
 
+// Restore Purchase
+// Make data sync with appstore 
+  Future<bool> restorePurchases() async {
+    if (_platform.isAndroid) {
+      return true;
+    } else if (_platform.isIOS) {
+      return await _channel.invokeMethod('appStoreSync');
+    }
+    throw PlatformException(
+        code: _platform.operatingSystem, message: "platform not supported");
+  }
+
   /// Request a subscription on `Android` or `iOS`.
   /// Result will be received in `purchaseUpdated` listener or `purchaseError` listener.
   ///
@@ -332,8 +344,6 @@ class FlutterInappPurchase {
 
   /// Add Store Payment (iOS only)
   /// Indicates that the App Store purchase should continue from the app instead of the App Store.
-  ///
-  /// @returns {Future<String>}
   Future<String?> getPromotedProductIOS() async {
     if (_platform.isIOS) {
       return await _channel.invokeMethod('getPromotedProduct');

@@ -1,4 +1,4 @@
-package com.dooboolab.flutterinapppurchase
+package com.nblsolutions.flutterinapppurchaseplus
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware

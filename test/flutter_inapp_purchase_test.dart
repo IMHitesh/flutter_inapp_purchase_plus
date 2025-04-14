@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
+import 'package:flutter_inapp_purchase_plus/flutter_inapp_purchase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:platform/platform.dart';
 
@@ -1411,7 +1411,7 @@ void main() {
       });
     });
     group('checkSubscribed', () {
-      // FIXME
+      // FixMe
       // This method can't be tested, because this method calls static methods internally.
       // To test, it needs to change static method to non-static method.
     });

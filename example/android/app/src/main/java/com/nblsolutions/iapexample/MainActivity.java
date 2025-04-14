@@ -1,4 +1,4 @@
-package com.dooboolab.test;
+package com.nblsolutions.iapexample;
 
 import android.os.Bundle;
 import io.flutter.embedding.android.FlutterActivity;

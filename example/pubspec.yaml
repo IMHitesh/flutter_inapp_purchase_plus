@@ -25,7 +25,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_inapp_purchase:
+  flutter_inapp_purchase_plus:
     path: ../
 
 # For information on the generic Dart part of this file, see the
