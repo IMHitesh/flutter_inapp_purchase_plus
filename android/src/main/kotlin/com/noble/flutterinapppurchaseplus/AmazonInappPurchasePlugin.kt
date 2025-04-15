@@ -1,4 +1,4 @@
-package com.nblsolutions.flutterinapppurchaseplus
+package com.noble.flutterinapppurchaseplus
 
 import android.app.Activity
 import android.content.Context

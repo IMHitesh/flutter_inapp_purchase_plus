@@ -34,7 +34,7 @@ For help on editing plugin code, view the [documentation](https://flutter.io/dev
 | getProducts                  |                                                                        `List<String>` Product IDs/skus                                                                         |    `List<IAPItem>`    | Get a list of products (consumable and non-consumable items, but not subscriptions). Note: On iOS versions earlier than 11.2 this method _will_ return subscriptions if they are included in your list of SKUs. This is because we cannot differentiate between IAP products and subscriptions prior to 11.2.                                                                                                                                                            |
 | getSubscriptions             |                                                                      `List<String>` Subscription IDs/skus                                                                      |    `List<IAPItem>`    | Get a list of subscriptions. Note: On iOS this method has the same output as `getProducts`. Because iOS does not differentiate between IAP products and subscriptions.                                                                                                                                                                                                                                                                                                   |
 | getPurchaseHistory           |                                                                                                                                                                                |    `List<IAPItem>`    | Gets an invetory of purchases made by the user regardless of consumption status (where possible)                                                                                                                                                                                                                                                                                                                                                                         |
-| getAvailablePurchases        |                                                                                                                                                                                | `List<PurchasedItem>` | (aka restore purchase) Get all purchases made by the user (either non-consumable, or haven't been consumed yet)                                                                                                                                                                                                                                                                                                                                                          |
+| getAvailablePurchases        |                                                                                                                                                                                | `List<PurchasedItem>` | Get all purchases made by the user either non-consumable, or haven't been consumed yet `In iOS it not return consumable purchases`                                                                                                                                                                                                                                                                                                                                                          |
 | getAppStoreInitiatedProducts |                                                                                                                                                                                |    `List<IAPItem>`    | If the user has initiated a purchase directly on the App Store, the products that the user is attempting to purchase will be returned here. (iOS only) Note: On iOS versions earlier than 11.0 this method will always return an empty list, as the functionality was introduced in v11.0. [See Apple Docs for more info](https://developer.apple.com/documentation/storekit/skpaymenttransactionobserver/2877502-paymentqueue) Always returns an empty list on Android. |
 | requestSubscription          | `String` sku, `String` oldSkuAndroid?, `int` prorationModeAndroid?, `String` obfuscatedAccountIdAndroid?, `String` obfuscatedProfileIdAndroid?, `String` purchaseTokenAndroid? |         Null          | Create (request) a subscription to a sku. For upgrading/downgrading subscription on Android pass second parameter with current subscription ID, on iOS this is handled automatically by store. `purchaseUpdatedListener` will receive the result.                                                                                                                                                                                                                        |
 | requestPurchase              |                               `String` sku, `String` obfuscatedAccountIdAndroid?, `String` obfuscatedProfileIdAndroid?, `String` purchaseToken?                                |         Null          | Request a purchase. `purchaseUpdatedListener` will receive the result.                                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -47,7 +47,7 @@ For help on editing plugin code, view the [documentation](https://flutter.io/dev
 | validateReceiptIos           |                                                                `Map<String,String>` receiptBody, `bool` isTest                                                                 |    `http.Response`    | Validate receipt for ios.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | validateReceiptAndroid       |                                  `String` packageName, `String` productId, `String` productToken, `String` accessToken, `bool` isSubscription                                  |    `http.Response`    | Validate receipt for android.                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | showPromoCodesIOS            |                                                                                                                                                                                |                       | Show redeem codes in iOS.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| restorePurchases            |          |       | This iOS Specific method to sync with AppStore and load user purchase, After successfully calling this method call `getAvailablePurchases` for get active purchases.
+| appStoreSync            |          |       | This iOS Specific method to sync with AppStore, After successfully calling this method, call `getAvailablePurchases` for get active purchases.
 | showInAppMessageAndroid      |                                                                                                                                                                                |                       | Google Play will show users messaging during grace period and account hold once per day and provide them an opportunity to fix their payment without leaving the app                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## 🛒 Purchase flow in `flutter_inapp_purchase_plus`
@@ -224,11 +224,31 @@ To continue the transaction simple use the standard purchase flow from this plug
 
 ```dart
 void checkForAppStoreInitiatedProducts() async {
-  List<IAPItem> appStoreProducts = await FlutterInappPurchase.getAppStoreInitiatedProducts(); // Get list of products
+  List<IAPItem> appStoreProducts = await FlutterInappPurchase.instance.getAppStoreInitiatedProducts(); // Get list of products
   if (appStoreProducts.length > 0) {
     _requestPurchase(appStoreProducts.last); // Buy last product in the list
   }
 }
+```
+
+### Sync with AppStore (Restore Purchase)
+
+This method is used to synchronize the app with the App Store and restore any previously purchased non-consumable items or active subscriptions. It's particularly helpful in scenarios such as:
+
+- After reinstalling the app
+
+- When a user logs in on a new device
+
+- To manually trigger purchase restoration
+
+```dart
+  void retsorePurchase() async {
+    final result = await FlutterInappPurchase.instance.restorePurchases();
+    if (result) {
+      final purchases = await FlutterInappPurchase.instance.getAvailablePurchases();
+      // This purchase is list of PurchasedItem
+    }
+  }
 ```
 
 ## 🔐 ProGuard
@@ -238,7 +258,7 @@ If you have enabled proguard you will need to add the following rules to your `p
 ```
 #In app Purchase
 -keep class com.amazon.** {*;}
--keep class com.nblsolutions.** { *; }
+-keep class com.noble.** { *; }
 -keep class com.android.vending.billing.**
 -dontwarn com.amazon.**
 -keepattributes *Annotation*

@@ -1,4 +1,4 @@
-package com.nblsolutions.flutterinapppurchaseplus
+package com.noble.flutterinapppurchaseplus
 
 import android.os.Handler
 import io.flutter.plugin.common.MethodChannel

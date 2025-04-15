@@ -294,9 +294,10 @@ class FlutterInappPurchase {
         code: _platform.operatingSystem, message: "platform not supported");
   }
 
-// Restore Purchase
-// Make data sync with appstore 
-  Future<bool> restorePurchases() async {
+// Sync data with appstore
+// Use for restore purchases
+// After call this method don't forget to call getAvailableItems for available purchase
+  Future<bool> appStoreSync() async {
     if (_platform.isAndroid) {
       return true;
     } else if (_platform.isIOS) {

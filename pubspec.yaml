@@ -28,7 +28,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.nblsolutions.flutterinapppurchaseplus
+        package: com.noble.flutterinapppurchaseplus
         pluginClass: FlutterInappPurchasePlugin
         mainClass: FlutterInappPurchasePlugin
       ios:
