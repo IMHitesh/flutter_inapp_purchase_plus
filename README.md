@@ -1,24 +1,21 @@
-# flutter_inapp_purchase_plus
-
-[![Pub Version](https://img.shields.io/pub/v/flutter_inapp_purchase.svg?style=flat-square)](https://pub.dartlang.org/packages/flutter_inapp_purchase)
-[![Flutter CI](https://github.com/dooboolab/flutter_inapp_purchase/actions/workflows/ci.yml/badge.svg)](https://github.com/dooboolab/flutter_inapp_purchase/actions/workflows/ci.yml)
-[![Coverage Status](https://codecov.io/gh/dooboolab/flutter_inapp_purchase/branch/main/graph/badge.svg?token=WXBlKvRB2G)](https://codecov.io/gh/dooboolab/flutter_inapp_purchase)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-
-> 🔔 **Notice:** This is a fork of [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase), with additional changes by Noble App Solutions.
-
-## Flutter V2
+## <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter Logo" width="15" />  Flutter V2
 
 This packages is compatible with flutter v2.
 
+## 📱 Platform Support
+| OS | Minimum Version |
+|:----------:|:----------:|
+|  iOS    |  iOS 15+  |
+| 🤖 Android   | Api Level 21  |
 
-## What this plugin do
+
+## 🔍 What this plugin do
 
 This is an `In App Purchase` plugin for flutter. This project has been `forked` from [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase). We are working on adding support for `StoreKit 2` for Apple platform. Support for Apple platforms was deprecated in [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase), so we've added updated support for in-app purchases using the latest APIs.
 
 `PR` is always welcomed.
 
-## Getting Started
+## 🚀 Getting Started
 
 Follow the [Medium Blog](https://medium.com/@dooboolab/flutter-in-app-purchase-7a3fb9345e2a) for the configuration.
 
@@ -29,7 +26,7 @@ For help getting started with Flutter, view our online
 
 For help on editing plugin code, view the [documentation](https://flutter.io/developing-packages/#edit-plugin-package).
 
-## Methods
+## ⚒️ Methods
 
 | Function                         |                                                                                     Parameters                                                                                      |        Return         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | :--------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -53,11 +50,11 @@ For help on editing plugin code, view the [documentation](https://flutter.io/dev
 | restorePurchases            |          |       | This iOS Specific method to sync with AppStore and load user purchase, After successfully calling this method call `getAvailablePurchases` for get active purchases.
 | showInAppMessageAndroid      |                                                                                                                                                                                |                       | Google Play will show users messaging during grace period and account hold once per day and provide them an opportunity to fix their payment without leaving the app                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
-## Purchase flow in `flutter_inapp_purchase_plus`
+## 🛒 Purchase flow in `flutter_inapp_purchase_plus`
 
 > When you've successfully received result from `purchaseUpdated` listener, you'll have to `verify` the purchase either by `acknowledgePurchaseAndroid`, `consumePurchaseAndroid`, `finishTransactionIOS` depending on the purchase types or platforms. You'll have to use `consumePurchaseAndroid` for `consumable` products and `android` and `acknowledgePurchaseAndroid` for `non-consumable` products either `subscription`. For `ios`, there is no differences in `verifying` purchases. You can just call `finishTransaction`. If you do not verify the purchase, it will be refunded within 3 days to users. Lastly, if you want to abstract three different methods into one, consider using `finishTransaction` method.
 
-## Data Types
+## 📊 Data Types
 
 - IAPItem
 
@@ -110,18 +107,18 @@ For help on editing plugin code, view the [documentation](https://flutter.io/dev
   final String originalTransactionIdentifierIOS;
   ```
 
-## Install
+## ⬇️ Install
 
 Add `flutter_inapp_purchase_plus` as a dependency in pubspec.yaml
 
 For help on adding as a dependency, view the [documentation](https://flutter.io/using-packages/).
 
-## Configuring in app purchase
+##  ⚙️  Configuring in app purchase
 
 - Please refer to [Blog](https://medium.com/@dooboolab/react-native-in-app-purchase-121622d26b67).
 - [Amazon Kindle Fire](KINDLE.md)
 
-## Usage Guide
+## 📝 Usage Guide
 
 #### Android `connect` and `endConnection`
 
@@ -234,7 +231,7 @@ void checkForAppStoreInitiatedProducts() async {
 }
 ```
 
-## ProGuard
+## 🔐 ProGuard
 
 If you have enabled proguard you will need to add the following rules to your `proguard-rules.pro`
 
@@ -247,7 +244,10 @@ If you have enabled proguard you will need to add the following rules to your `p
 -keepattributes *Annotation*
 ```
 
-## Developers
+> 🔔 **Notice:** This is a fork of [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase), with additional changes by Noble App Solutions.
+
+
+## 👨‍💻 Developers
 
 - [@Hitesh Surani](https://github.com/IMHitesh)
 - [@Akash Tala](https://github.com/akashtala)
