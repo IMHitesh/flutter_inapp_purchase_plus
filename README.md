@@ -5,7 +5,7 @@ This packages is compatible with flutter v2.
 ## 📱 Platform Support
 | OS | Minimum Version |
 |:----------:|:----------:|
-|  iOS    |  iOS 15+  |
+| 🍎 iOS    |  iOS 15+  |
 | 🤖 Android   | Api Level 21  |
 
 
@@ -244,11 +244,4 @@ If you have enabled proguard you will need to add the following rules to your `p
 -keepattributes *Annotation*
 ```
 
-> 🔔 **Notice:** This is a fork of [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase), with additional changes by Noble App Solutions.
-
-
-## 👨‍💻 Developers
-
-- [@Hitesh Surani](https://github.com/IMHitesh)
-- [@Akash Tala](https://github.com/akashtala)
-
+> 🔔 **Notice:** This is a fork of [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase), enhanced with additional updates and improvements by [Hitesh Surani](https://github.com/IMHitesh) and team.
