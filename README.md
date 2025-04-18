@@ -17,10 +17,6 @@ This is an `In App Purchase` plugin for flutter. This project has been `forked` 
 
 ## 🚀 Getting Started
 
-Follow the [Medium Blog](https://medium.com/@dooboolab/flutter-in-app-purchase-7a3fb9345e2a) for the configuration.
-
-Follow the [Medium Blog](https://medium.com/bosc-tech-labs-private-limited/how-to-implement-subscriptions-in-app-purchase-in-flutter-7ce8906e608a) to add **subscriptions** in app purchase.
-
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 

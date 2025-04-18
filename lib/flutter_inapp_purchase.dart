@@ -403,8 +403,6 @@ class FlutterInappPurchase {
   }
 
   /// Get the pending purchases in IOS.
-  ///
-  /// @returns {Future<List<PurchasedItem>>}
   Future<List<PurchasedItem>?> getPendingTransactionsIOS() async {
     if (_platform.isIOS) {
       dynamic result = await _channel.invokeMethod(
@@ -576,7 +574,9 @@ class FlutterInappPurchase {
       var purchases = await (getAvailablePurchases());
 
       for (var purchase in purchases ?? []) {
-        if (purchase.productId == sku) return true;
+        if (purchase.productId == sku) {
+          return true;
+        }
       }
 
       return false;
