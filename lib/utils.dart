@@ -1,4 +1,4 @@
-import 'modules.dart';
+import 'package:flutter_inapp_purchase_plus/modules.dart';
 import 'dart:convert';
 
 List<IAPItem> extractItems(dynamic result) {

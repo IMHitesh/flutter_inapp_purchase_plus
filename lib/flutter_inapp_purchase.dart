@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:platform/platform.dart';
 
 
-import 'modules.dart';
-import 'utils.dart';
+import 'package:flutter_inapp_purchase_plus/modules.dart';
+import 'package:flutter_inapp_purchase_plus/utils.dart';
 
 export 'modules.dart';
 

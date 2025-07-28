@@ -81,29 +81,29 @@ class IAPItem {
   /// IAPItem item = IAPItem.fromJSON(convert.jsonDecode(str));
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['productId'] = this.productId;
-    data['price'] = this.price;
-    data['currency'] = this.currency;
-    data['localizedPrice'] = this.localizedPrice;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['introductoryPrice'] = this.introductoryPrice;
+    data['productId'] = productId;
+    data['price'] = price;
+    data['currency'] = currency;
+    data['localizedPrice'] = localizedPrice;
+    data['title'] = title;
+    data['description'] = description;
+    data['introductoryPrice'] = introductoryPrice;
 
-    data['subscriptionPeriodNumberIOS'] = this.subscriptionPeriodNumberIOS;
-    data['subscriptionPeriodUnitIOS'] = this.subscriptionPeriodUnitIOS;
+    data['subscriptionPeriodNumberIOS'] = subscriptionPeriodNumberIOS;
+    data['subscriptionPeriodUnitIOS'] = subscriptionPeriodUnitIOS;
     data['introductoryPricePaymentModeIOS'] =
-        this.introductoryPricePaymentModeIOS;
+        introductoryPricePaymentModeIOS;
     data['introductoryPriceNumberOfPeriodsIOS'] =
-        this.introductoryPriceNumberOfPeriodsIOS;
+        introductoryPriceNumberOfPeriodsIOS;
     data['introductoryPriceSubscriptionPeriodIOS'] =
-        this.introductoryPriceSubscriptionPeriodIOS;
-    data['subscriptionPeriodAndroid'] = this.subscriptionPeriodAndroid;
-    data['signatureAndroid'] = this.signatureAndroid;
+        introductoryPriceSubscriptionPeriodIOS;
+    data['subscriptionPeriodAndroid'] = subscriptionPeriodAndroid;
+    data['signatureAndroid'] = signatureAndroid;
 
-    data['iconUrl'] = this.iconUrl;
-    data['originalJson'] = this.originalJson;
-    data['originalPrice'] = this.originalPrice;
-    data['discounts'] = this.discountsIOS;
+    data['iconUrl'] = iconUrl;
+    data['originalJson'] = originalJson;
+    data['originalPrice'] = originalPrice;
+    data['discounts'] = discountsIOS;
     return data;
   }
 
@@ -230,13 +230,13 @@ class DiscountIOS {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['identifier'] = this.identifier;
-    data['type'] = this.type;
-    data['numberOfPeriods'] = this.numberOfPeriods;
-    data['price'] = this.price;
-    data['localizedPrice'] = this.localizedPrice;
-    data['paymentMode'] = this.paymentMode;
-    data['subscriptionPeriod'] = this.subscriptionPeriod;
+    data['identifier'] = identifier;
+    data['type'] = type;
+    data['numberOfPeriods'] = numberOfPeriods;
+    data['price'] = price;
+    data['localizedPrice'] = localizedPrice;
+    data['paymentMode'] = paymentMode;
+    data['subscriptionPeriod'] = subscriptionPeriod;
     return data;
   }
 

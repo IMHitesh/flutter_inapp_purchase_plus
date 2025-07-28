@@ -12,11 +12,9 @@ This packages is compatible with flutter v2.
 
 
 ## 🔍 What this plugin do
-This is an `In App Purchase` plugin for Flutter, forked from the original [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase) package.
-
 We are actively maintaining and modernizing the codebase with support for the latest platform APIs:
 
- - ✅ **Apple (iOS/macOS)**: We're adding support for **`StoreKit 2`**, Apple's modern in-app purchase framework. The original plugin deprecated Apple platform support, so this fork restores and extends compatibility using the latest StoreKit APIs.
+ - ✅ **Apple (iOS)**: We're adding support for **`StoreKit 2`**, Apple's modern in-app purchase framework.
 
 - ✅ **Android**: Integrated support for Google Play Billing Library version **`8.0.0`**, aligning with the latest Play Store requirements and security enhancements.
 
@@ -264,4 +262,4 @@ If you have enabled proguard you will need to add the following rules to your `p
 -keepattributes *Annotation*
 ```
 
-> 🔔 **Notice:** This is a fork of [flutter_inapp_purchase](https://github.com/hyochan/flutter_inapp_purchase), enhanced with additional updates and improvements by [Hitesh Surani](https://github.com/IMHitesh) and team.
+> 🔔 Notice: This package is actively maintained with ongoing updates, feature enhancements, and platform support improvements, led by Hitesh Surani and team.

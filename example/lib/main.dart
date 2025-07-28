@@ -4,23 +4,27 @@ import 'dart:io';
 
 import 'package:flutter_inapp_purchase_plus/flutter_inapp_purchase.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Flutter Inapp Plugin by Noble App Solutions'),
+            title: const Text('Flutter Inapp Plugin by Noble App Solutions'),
           ),
-          body: InApp()),
+          body: const InApp()),
     );
   }
 }
 
 class InApp extends StatefulWidget {
+  const InApp({Key? key}) : super(key: key);
+
   @override
   _InAppState createState() => new _InAppState();
 }
@@ -60,7 +64,7 @@ class _InAppState extends State<InApp> {
   Future<void> initPlatformState() async {
     // prepare
     var result = await FlutterInappPurchase.instance.initialize();
-    print('result: $result');
+    debugPrint('result: $result');
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
@@ -70,24 +74,24 @@ class _InAppState extends State<InApp> {
     // refresh items for android
     try {
       String msg = await FlutterInappPurchase.instance.consumeAll();
-      print('consumeAllItems: $msg');
+      debugPrint('consumeAllItems: $msg');
     } catch (err) {
-      print('consumeAllItems error: $err');
+      debugPrint('consumeAllItems error: $err');
     }
 
     _connectionSubscription =
         FlutterInappPurchase.connectionUpdated.listen((connected) {
-      print('connected: $connected');
+      debugPrint('connected: $connected');
     });
 
     _purchaseUpdatedSubscription =
         FlutterInappPurchase.purchaseUpdated.listen((productItem) {
-      print('purchase-updated: $productItem');
+      debugPrint('purchase-updated: $productItem');
     });
 
     _purchaseErrorSubscription =
         FlutterInappPurchase.purchaseError.listen((purchaseError) {
-      print('purchase-error: $purchaseError');
+      debugPrint('purchase-error: $purchaseError');
     });
   }
 
@@ -99,13 +103,13 @@ class _InAppState extends State<InApp> {
     List<IAPItem> items =
         await FlutterInappPurchase.instance.getProducts(_productLists);
     for (var item in items) {
-      print('${item.toString()}');
-      this._items.add(item);
+      debugPrint('${item.toString()}');
+      _items.add(item);
     }
 
     setState(() {
-      this._items = items;
-      this._purchases = [];
+      _items = items;
+      _purchases = [];
     });
   }
 
@@ -113,13 +117,13 @@ class _InAppState extends State<InApp> {
     List<PurchasedItem>? items =
         await FlutterInappPurchase.instance.getAvailablePurchases();
     for (var item in items!) {
-      print('${item.toString()}');
-      this._purchases.add(item);
+      debugPrint('${item.toString()}');
+      _purchases.add(item);
     }
 
     setState(() {
-      this._items = [];
-      this._purchases = items;
+      _items = [];
+      _purchases = items;
     });
   }
 
@@ -127,54 +131,51 @@ class _InAppState extends State<InApp> {
     List<PurchasedItem>? items =
         await FlutterInappPurchase.instance.getPurchaseHistory();
     for (var item in items!) {
-      print('${item.toString()}');
-      this._purchases.add(item);
+      debugPrint('${item.toString()}');
+      _purchases.add(item);
     }
 
     setState(() {
-      this._items = [];
-      this._purchases = items;
+      _items = [];
+      _purchases = items;
     });
   }
 
   List<Widget> _renderInApps() {
-    List<Widget> widgets = this
-        ._items
+    List<Widget> widgets = _items
         .map((item) => Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5.0),
-                      child: Text(
-                        item.toString(),
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.black,
-                        ),
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 5.0),
+                    child: Text(
+                      item.toString(),
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black,
                       ),
                     ),
-                    MaterialButton(
-                      color: Colors.orange,
-                      onPressed: () {
-                        print("---------- Buy Item Button Pressed");
-                        this._requestPurchase(item);
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Container(
-                              height: 48.0,
-                              alignment: Alignment(-1.0, 0.0),
-                              child: Text('Buy Item'),
-                            ),
+                  ),
+                  MaterialButton(
+                    color: Colors.orange,
+                    onPressed: () {
+                      debugPrint("---------- Buy Item Button Pressed");
+                      _requestPurchase(item);
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            height: 48.0,
+                            alignment: const Alignment(-1.0, 0.0),
+                            child: const Text('Buy Item'),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ))
         .toList();
@@ -182,25 +183,22 @@ class _InAppState extends State<InApp> {
   }
 
   List<Widget> _renderPurchases() {
-    List<Widget> widgets = this
-        ._purchases
+    List<Widget> widgets = _purchases
         .map((item) => Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5.0),
-                      child: Text(
-                        item.toString(),
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.black,
-                        ),
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 5.0),
+                    child: Text(
+                      item.toString(),
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black,
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             ))
         .toList();
@@ -213,18 +211,16 @@ class _InAppState extends State<InApp> {
     double buttonWidth = (screenWidth / 3) - 20;
 
     return Container(
-      padding: EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       child: ListView(
         children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Container(
-                child: Text(
-                  'Running on: ${Platform.operatingSystem} - ${Platform.operatingSystemVersion}\n',
-                  style: TextStyle(fontSize: 18.0),
-                ),
+              Text(
+                'Running on: ${Platform.operatingSystem} - ${Platform.operatingSystemVersion}\n',
+                style: const TextStyle(fontSize: 18.0),
               ),
               Column(
                 children: <Widget>[
@@ -234,18 +230,20 @@ class _InAppState extends State<InApp> {
                       Container(
                         width: buttonWidth,
                         height: 60.0,
-                        margin: EdgeInsets.all(7.0),
+                        margin: const EdgeInsets.all(7.0),
                         child: MaterialButton(
                           color: Colors.amber,
-                          padding: EdgeInsets.all(0.0),
+                          padding: const EdgeInsets.all(0.0),
                           onPressed: () async {
-                            print("---------- Connect Billing Button Pressed");
+                            debugPrint(
+                                "---------- Connect Billing Button Pressed");
                             await FlutterInappPurchase.instance.initialize();
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            alignment: Alignment(0.0, 0.0),
-                            child: Text(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            alignment: const Alignment(0.0, 0.0),
+                            child: const Text(
                               'Connect Billing',
                               style: TextStyle(
                                 fontSize: 16.0,
@@ -257,12 +255,13 @@ class _InAppState extends State<InApp> {
                       Container(
                         width: buttonWidth,
                         height: 60.0,
-                        margin: EdgeInsets.all(7.0),
+                        margin: const EdgeInsets.all(7.0),
                         child: MaterialButton(
                           color: Colors.amber,
-                          padding: EdgeInsets.all(0.0),
+                          padding: const EdgeInsets.all(0.0),
                           onPressed: () async {
-                            print("---------- End Connection Button Pressed");
+                            debugPrint(
+                                "---------- End Connection Button Pressed");
                             await FlutterInappPurchase.instance.finalize();
                             if (_purchaseUpdatedSubscription != null) {
                               _purchaseUpdatedSubscription.cancel();
@@ -273,14 +272,15 @@ class _InAppState extends State<InApp> {
                               _purchaseErrorSubscription = null;
                             }
                             setState(() {
-                              this._items = [];
-                              this._purchases = [];
+                              _items = [];
+                              _purchases = [];
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
-                            alignment: Alignment(0.0, 0.0),
-                            child: Text(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            alignment: const Alignment(0.0, 0.0),
+                            child: const Text(
                               'End Connection',
                               style: TextStyle(
                                 fontSize: 16.0,
@@ -297,18 +297,20 @@ class _InAppState extends State<InApp> {
                         Container(
                             width: buttonWidth,
                             height: 60.0,
-                            margin: EdgeInsets.all(7.0),
+                            margin: const EdgeInsets.all(7.0),
                             child: MaterialButton(
                               color: Colors.green,
-                              padding: EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(0.0),
                               onPressed: () {
-                                print("---------- Get Items Button Pressed");
-                                this._getProduct();
+                                debugPrint(
+                                    "---------- Get Items Button Pressed");
+                                _getProduct();
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                alignment: Alignment(0.0, 0.0),
-                                child: Text(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                alignment: const Alignment(0.0, 0.0),
+                                child: const Text(
                                   'Get Items',
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -319,19 +321,20 @@ class _InAppState extends State<InApp> {
                         Container(
                             width: buttonWidth,
                             height: 60.0,
-                            margin: EdgeInsets.all(7.0),
+                            margin: const EdgeInsets.all(7.0),
                             child: MaterialButton(
                               color: Colors.green,
-                              padding: EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(0.0),
                               onPressed: () {
-                                print(
+                                debugPrint(
                                     "---------- Get Purchases Button Pressed");
-                                this._getPurchases();
+                                _getPurchases();
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                alignment: Alignment(0.0, 0.0),
-                                child: Text(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                alignment: const Alignment(0.0, 0.0),
+                                child: const Text(
                                   'Get Purchases',
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -342,19 +345,20 @@ class _InAppState extends State<InApp> {
                         Container(
                             width: buttonWidth,
                             height: 60.0,
-                            margin: EdgeInsets.all(7.0),
+                            margin: const EdgeInsets.all(7.0),
                             child: MaterialButton(
                               color: Colors.green,
-                              padding: EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(0.0),
                               onPressed: () {
-                                print(
+                                debugPrint(
                                     "---------- Get Purchase History Button Pressed");
-                                this._getPurchaseHistory();
+                                _getPurchaseHistory();
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                alignment: Alignment(0.0, 0.0),
-                                child: Text(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                alignment: const Alignment(0.0, 0.0),
+                                child: const Text(
                                   'Get Purchase History',
                                   style: TextStyle(
                                     fontSize: 16.0,
@@ -366,10 +370,10 @@ class _InAppState extends State<InApp> {
                 ],
               ),
               Column(
-                children: this._renderInApps(),
+                children: _renderInApps(),
               ),
               Column(
-                children: this._renderPurchases(),
+                children: _renderPurchases(),
               ),
             ],
           ),
