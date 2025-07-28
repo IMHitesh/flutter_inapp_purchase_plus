@@ -91,8 +91,7 @@ class IAPItem {
 
     data['subscriptionPeriodNumberIOS'] = subscriptionPeriodNumberIOS;
     data['subscriptionPeriodUnitIOS'] = subscriptionPeriodUnitIOS;
-    data['introductoryPricePaymentModeIOS'] =
-        introductoryPricePaymentModeIOS;
+    data['introductoryPricePaymentModeIOS'] = introductoryPricePaymentModeIOS;
     data['introductoryPriceNumberOfPeriodsIOS'] =
         introductoryPriceNumberOfPeriodsIOS;
     data['introductoryPriceSubscriptionPeriodIOS'] =

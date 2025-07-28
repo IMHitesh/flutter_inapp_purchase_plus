@@ -7,7 +7,6 @@ import 'package:flutter_inapp_purchase_plus/support_store.dart';
 import 'package:http/http.dart' as http;
 import 'package:platform/platform.dart';
 
-
 import 'package:flutter_inapp_purchase_plus/modules.dart';
 import 'package:flutter_inapp_purchase_plus/utils.dart';
 
@@ -566,7 +565,8 @@ class FlutterInappPurchase {
       for (var purchase in history) {
         Duration difference =
             DateTime.now().difference(purchase.transactionDate!);
-        if (difference.inMinutes <= (duration + grace).inMinutes && purchase.productId == sku) {
+        if (difference.inMinutes <= (duration + grace).inMinutes &&
+            purchase.productId == sku) {
           return true;
         }
       }
