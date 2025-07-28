@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_inapp_purchase_plus (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_inapp_purchase_plus (from `.symlinks/plugins/flutter_inapp_purchase_plus/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_inapp_purchase_plus:
+    :path: ".symlinks/plugins/flutter_inapp_purchase_plus/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_inapp_purchase_plus: 72f9008fe87abfbc8a98d6eb9202b19ca32fec8a
+
+PODFILE CHECKSUM: 5e6838852cb965046aea7206d2801f7cad357e2d
+
+COCOAPODS: 1.16.2
