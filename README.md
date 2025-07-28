@@ -1,6 +1,11 @@
-## <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter Logo" width="15" />  Flutter V2
+# flutter_inapp_purchase_plus
 
-This packages is compatible with flutter v2.
+[![Pub Version](https://img.shields.io/pub/v/flutter_inapp_purchase_plus.svg?style=flat-square)](https://pub.dartlang.org/packages/flutter_inapp_purchase_plus) 
+[![Flutter CI](https://github.com/IMHitesh/flutter_inapp_purchase_plus/actions/workflows/ci.yml/badge.svg)](https://github.com/IMHitesh/flutter_inapp_purchase_plus/blob/main/.github/workflows/ci.yml)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
+A robust and feature-rich Flutter plugin enabling seamless integration of in-app purchases across both iOS and Android platforms.
+
 
 ## 📱 Platform Support
 | OS | Minimum Version |
@@ -28,6 +33,18 @@ For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
 
 For help on editing plugin code, view the [documentation](https://flutter.io/developing-packages/#edit-plugin-package).
+
+
+## 🎯 Feature Support
+| Feature | iOS | Android |
+| :-------: | :-------: | :--------: |
+| Products & Subscriptions | ✅ | ✅ |
+| Purchase Lifecycle | ✅ | ✅ |
+| Secure Receipt Processing | ✅ | ✅ |
+| Subscription Lifecycle Management | ✅ | ✅ |
+| Offer Management | ✅ | N/A |
+| StoreKit 2 | ✅ | N/A |
+| Billing Client v8 | N/A | ✅ |
 
 ## ⚒️ Methods
 
