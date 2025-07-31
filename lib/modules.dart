@@ -73,7 +73,7 @@ class IAPItem {
   /// wow, i find if i want to save a IAPItem, there is not "toJson" to cast it into String...
   /// i'm sorry to see that... so,
   ///
-  /// you can cast a IAPItem to json(Map<String, dynamic>) via invoke this method.
+  /// you can cast a IAPItem to json via invoke this method.
   /// for example:
   /// String str =  convert.jsonEncode(item)
   ///
