@@ -1,3 +1,6 @@
+## 1.0.3
+- Deprecation cleanup: Eliminated legacy implementations tied to Android Billing Client v8.
+
 ## 1.0.2
 
 ### Fixed
