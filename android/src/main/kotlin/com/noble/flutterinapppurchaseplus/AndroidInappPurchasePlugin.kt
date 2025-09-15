@@ -520,6 +520,7 @@ class AndroidInappPurchasePlugin internal constructor() : MethodCallHandler,
             val obfuscatedAccountId = call.argument<String>("obfuscatedAccountId")
             val obfuscatedProfileId = call.argument<String>("obfuscatedProfileId")
             val productId = call.argument<String>("productId")
+            val prorationMode = call.argument<Int>("prorationMode")!!
             val purchaseToken = call.argument<String>("purchaseToken")
             val offerTokenIndex = call.argument<Int>("offerTokenIndex")
             val builder = newBuilder()
@@ -567,6 +568,30 @@ class AndroidInappPurchasePlugin internal constructor() : MethodCallHandler,
             if (obfuscatedProfileId != null) {
                 builder.setObfuscatedProfileId(obfuscatedProfileId)
             }
+
+            when (prorationMode) {
+
+                -1 -> {} //ignore
+                SubscriptionUpdateParams.ReplacementMode.CHARGE_PRORATED_PRICE -> {
+                    params.setSubscriptionReplacementMode(SubscriptionUpdateParams.ReplacementMode.CHARGE_PRORATED_PRICE)
+                    if (type != BillingClient.ProductType.SUBS) {
+                        safeChannel.error(
+                            TAG,
+                            "buyItemByType",
+                            "IMMEDIATE_AND_CHARGE_PRORATED_PRICE for proration mode only works in subscription purchase."
+                        )
+                        return
+                    }
+                }
+                SubscriptionUpdateParams.ReplacementMode.WITHOUT_PRORATION,
+                SubscriptionUpdateParams.ReplacementMode.DEFERRED,
+                SubscriptionUpdateParams.ReplacementMode.WITH_TIME_PRORATION,
+                SubscriptionUpdateParams.ReplacementMode.CHARGE_FULL_PRICE ->
+                params.setSubscriptionReplacementMode(prorationMode)
+                else -> params.setSubscriptionReplacementMode(SubscriptionUpdateParams.ReplacementMode.UNKNOWN_REPLACEMENT_MODE)
+            }
+
+
             if (purchaseToken != null) {
                 params.setOldPurchaseToken(purchaseToken)
                 builder.setSubscriptionUpdateParams(params.build())
