@@ -70,6 +70,19 @@ For help on editing plugin code, view the [documentation](https://flutter.io/dev
 | appStoreSync            |          |       | This iOS Specific method to sync with AppStore, After successfully calling this method, call `getAvailablePurchases` for get active purchases.
 | showInAppMessageAndroid      |                                                                                                                                                                                |                       | Google Play will show users messaging during grace period and account hold once per day and provide them an opportunity to fix their payment without leaving the app                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
+## 📌 Android Proration Mode Migration (Billing Library 8.0+)
+  Google Play Billing Library v8.0 deprecated `SubscriptionUpdateParams.setReplaceProrationMode()` and replaced it with `SubscriptionUpdateParams.setReplacementMode()`.
+Accordingly, the enum has changed from `ProrationMode` to `ReplacementMode`.
+#### Migration mapping:
+  | Old (ProrationMode) | New (ReplacementMode) |
+  | :----: | :------: |
+  | UNKNOWN_SUBSCRIPTION_UPGRADE_DOWNGRADE_POLICY | UNKNOWN_REPLACEMENT_MODE |
+  | IMMEDIATE_WITH_TIME_PRORATION | WITH_TIME_PRORATION |
+  | IMMEDIATE_AND_CHARGE_PRORATED_PRICE | CHARGE_PRORATED_PRICE |
+  | IMMEDIATE_WITHOUT_PRORATION | WITHOUT_PRORATION |
+  | IMMEDIATE_AND_CHARGE_FULL_PRICE | CHARGE_FULL_PRICE |
+  | DEFERRED | DEFERRED |
+
 ## 🛒 Purchase flow in `flutter_inapp_purchase_plus`
 
 > When you've successfully received result from `purchaseUpdated` listener, you'll have to `verify` the purchase either by `acknowledgePurchaseAndroid`, `consumePurchaseAndroid`, `finishTransactionIOS` depending on the purchase types or platforms. You'll have to use `consumePurchaseAndroid` for `consumable` products and `android` and `acknowledgePurchaseAndroid` for `non-consumable` products either `subscription`. For `ios`, there is no differences in `verifying` purchases. You can just call `finishTransaction`. If you do not verify the purchase, it will be refunded within 3 days to users. Lastly, if you want to abstract three different methods into one, consider using `finishTransaction` method.
@@ -258,7 +271,7 @@ This method is used to synchronize the app with the App Store and restore any pr
 
 ```dart
   void retsorePurchase() async {
-    final result = await FlutterInappPurchase.instance.restorePurchases();
+    final result = await FlutterInappPurchase.instance.appStoreSync();
     if (result) {
       final purchases = await FlutterInappPurchase.instance.getAvailablePurchases();
       // This purchase is list of PurchasedItem

@@ -1,3 +1,7 @@
+## 1.0.4
+- **Google Play Billing Library**
+  - Google Play Billing Library v8.0 deprecated `SubscriptionUpdateParams.setReplaceProrationMode()` and replaced it with `SubscriptionUpdateParams.setReplacementMode()`. Accordingly, the enum has changed from `ProrationMode` to `ReplacementMode`.
+
 ## 1.0.3
 - Deprecation cleanup: Eliminated legacy implementations tied to Android Billing Client v8.
 
