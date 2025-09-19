@@ -9,7 +9,7 @@ name: flutter_inapp_purchase_plus
 description: In App Purchase plugin for flutter. This project has been forked by
   flutter_inapp_purchase and we are willing to share same experience with that on
   flutter_inapp_purchase.
-version: 1.0.4
+version: 1.0.5
 homepage: https://github.com/IMHitesh/flutter_inapp_purchase_plus/blob/main/pubspec.yaml
 environment:
   sdk: ">=2.15.0 <4.0.0"

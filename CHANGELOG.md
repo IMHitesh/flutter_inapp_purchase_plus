@@ -1,3 +1,6 @@
+## 1.0.5
+- Fix: handle parsing exception for DiscountIOS.price
+
 ## 1.0.4
 - **Google Play Billing Library**
   - Google Play Billing Library v8.0 deprecated `SubscriptionUpdateParams.setReplaceProrationMode()` and replaced it with `SubscriptionUpdateParams.setReplacementMode()`. Accordingly, the enum has changed from `ProrationMode` to `ReplacementMode`.
