@@ -518,7 +518,7 @@ extension IAPManager {
                     "identifier": discount.id ?? "",
                     "type": discountType,
                     "numberOfPeriods": numberOfPeriods,
-                    "price": "\(discount.price)",
+                    "price": Double(truncating: discount.price as NSNumber),
                     "localizedPrice": discount.displayPrice,
                     "paymentMode" : paymentMode,
                     "subscriptionPeriod": subscriptionPeriods
