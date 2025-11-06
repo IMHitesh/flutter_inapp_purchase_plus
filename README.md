@@ -127,6 +127,7 @@ Accordingly, the enum has changed from `ProrationMode` to `ReplacementMode`.
   final DateTime transactionDate;
   final String transactionReceipt;
   final String purchaseToken;
+  final String? jwsRepresentation;
 
   // Android only
   final String dataAndroid;

@@ -107,75 +107,79 @@ extension IAPManager {
                     result = try await product.purchase(options: [purchaseOption])
                 }
                 switch result {
-                case let .success(.verified(transaction)):
-                    Task {
-                        debugPrint("Completed purchase with Transaction: \(transaction)")
-                
-                        /// For the consumable products only because currentEntitlements not return consumable products
-                        /// Here we extra check we get transaction for product that we tried to purchase or not
-                        /// If we get some other transaction then we return unknown error
-                        if transaction.productType == .consumable {
-                            if transaction.productID == product.id {
-                                Task {
-                                    let jsonString = self.getJsonString(await self.getTransactionJson(from: transaction))
+                case let .success(verification):
+                    switch verification {
+                    case .verified(let transaction):
+                        Task {
+                            debugPrint("Completed purchase with Transaction: \(transaction)")
+                    
+                            /// For the consumable products only because currentEntitlements not return consumable products
+                            /// Here we extra check we get transaction for product that we tried to purchase or not
+                            /// If we get some other transaction then we return unknown error
+                            if transaction.productType == .consumable {
+                                if transaction.productID == product.id {
+                                    Task {
+                                        let jsonString = self.getJsonString(await self.getTransactionJson(from: transaction, jws: verification.jwsRepresentation))
+                                        DispatchQueue.main.async {
+                                            IAPManager.shared.channel.invokeMethod("purchase-updated", arguments: jsonString)
+                                        }
+                                    }
+                                } else {
                                     DispatchQueue.main.async {
-                                        IAPManager.shared.channel.invokeMethod("purchase-updated", arguments: jsonString)
+                                        IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
+                                            "responseCode": 400,
+                                            "debugMessage": "Purchase failed",
+                                            "code": "E_USER_ERROR",
+                                            "message": "Oops! Payment information invalid. Did you enter your password correctly?"
+                                        ]))
                                     }
                                 }
-                            } else {
+                                return
+                            }
+                            
+                            /// Here we add currentEntitlements so we can re-verify about purchase and unlock premium according that
+                            self.getActiveTransaction(success: { allPurchasedProductIds in
+                                if allPurchasedProductIds.contains(where: { $0.productID == product.id }) {
+                                    Task {
+                                        let jsonString = self.getJsonString(await self.getTransactionJson(from: transaction, jws: verification.jwsRepresentation))
+                                        DispatchQueue.main.async {
+                                            IAPManager.shared.channel.invokeMethod("purchase-updated", arguments: jsonString)
+                                        }
+                                    }
+                                } else {
+                                    DispatchQueue.main.async {
+                                        IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
+                                            "responseCode": 400,
+                                            "debugMessage": "Product ID mismatch after verification.",
+                                            "code": "E_USER_ERROR",
+                                            "message": "Oops! Payment information invalid. Did you enter your password correctly?"
+                                        ]))
+                                    }
+                                }
+                            }, failure: { error in
                                 DispatchQueue.main.async {
                                     IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
-                                        "responseCode": 400,
-                                        "debugMessage": "Purchase failed",
-                                        "code": "E_USER_ERROR",
-                                        "message": "Oops! Payment information invalid. Did you enter your password correctly?"
+                                        "responseCode": 404,
+                                        "debugMessage": "Transaction not found.",
+                                        "code": "E_TRANSACTION_NOT_FOUND",
+                                        "message": "We couldn't verify your purchase. Please try again later."
                                     ]))
                                 }
-                            }
-                            return
+                            })
                         }
-                        
-                        /// Here we add currentEntitlements so we can re-verify about purchase and unlock premium according that
-                        self.getActiveTransaction(success: { allPurchasedProductIds in
-                            if allPurchasedProductIds.contains(where: { $0.productID == product.id }) {
-                                Task {
-                                    let jsonString = self.getJsonString(await self.getTransactionJson(from: transaction))
-                                    DispatchQueue.main.async {
-                                        IAPManager.shared.channel.invokeMethod("purchase-updated", arguments: jsonString)
-                                    }
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
-                                        "responseCode": 400,
-                                        "debugMessage": "Product ID mismatch after verification.",
-                                        "code": "E_USER_ERROR",
-                                        "message": "Oops! Payment information invalid. Did you enter your password correctly?"
-                                    ]))
-                                }
-                            }
-                        }, failure: { error in
-                            DispatchQueue.main.async {
-                                IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
-                                    "responseCode": 404,
-                                    "debugMessage": "Transaction not found.",
-                                    "code": "E_TRANSACTION_NOT_FOUND",
-                                    "message": "We couldn't verify your purchase. Please try again later."
-                                ]))
-                            }
-                        })
+                        break
+                    case .unverified(_,let error):
+                        debugPrint("Unverified purchase. Might be jailbroken. Error: \(error.localizedDescription)")
+                        DispatchQueue.main.async {
+                            IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
+                                "responseCode": 403,
+                                "debugMessage": "Unverified purchase. Possibly jailbroken device.",
+                                "code": "E_SERVICE_ERROR",
+                                "message": "Unable to process the transaction: your device is not allowed to make purchases."
+                            ]))
+                        }
+                        break
                     }
-                case let .success(.unverified(_, error)):
-                    debugPrint("Unverified purchase. Might be jailbroken. Error: \(error.localizedDescription)")
-                    DispatchQueue.main.async {
-                        IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
-                            "responseCode": 403,
-                            "debugMessage": "Unverified purchase. Possibly jailbroken device.",
-                            "code": "E_SERVICE_ERROR",
-                            "message": "Unable to process the transaction: your device is not allowed to make purchases."
-                        ]))
-                    }
-                    break
                 case .pending:
                     DispatchQueue.main.async {
                         IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
@@ -249,19 +253,17 @@ extension IAPManager {
     func getPurchaseHistory(result: @escaping FlutterResult) {
         Task {
             var purchasedPlan: [Transaction] = []
+            var transactionData: [[String: Any]] = []
             for await result in Transaction.currentEntitlements {
                 switch result {
                 case .verified(let transaction):
                     if transaction.revocationDate != nil { continue }
                     debugPrint(transaction)
                     purchasedPlan.append(transaction)
+                    await transactionData.append(self.getTransactionJson(from: transaction, jws: result.jwsRepresentation))
                 case .unverified(_, _):
                     break
                 }
-            }
-            var transactionData: [[String: Any]] = []
-            for transaction in purchasedPlan {
-                await transactionData.append(self.getTransactionJson(from: transaction))
             }
             DispatchQueue.main.async {
                 result(transactionData)
@@ -324,7 +326,7 @@ extension IAPManager {
                     break
                 case .verified(let transaction):
                     debugPrint("Pending Transaction: \(transaction.productID)")
-                    await pendingTransactions.append(self.getTransactionJson(from: transaction))
+                    await pendingTransactions.append(self.getTransactionJson(from: transaction, jws: result.jwsRepresentation))
                 }
             }
             DispatchQueue.main.async {
@@ -422,7 +424,7 @@ extension IAPManager {
 
 // MARK: - Utility Methods
 extension IAPManager {
-    private func getTransactionJson(from transaction: Transaction) async -> [String: Any] {
+    private func getTransactionJson(from transaction: Transaction, jws: String) async -> [String: Any] {
         return [
             "productId": transaction.productID,
             "transactionId": "\(transaction.id)",
@@ -430,7 +432,8 @@ extension IAPManager {
             "originalTransactionDateIOS": "\(transaction.originalPurchaseDate.timeIntervalSince1970 * 1000)",
             "originalTransactionIdentifierIOS": "\(transaction.originalID)",
             "transactionStateIOS": await transaction.subscriptionStatus?.state.rawValue ?? -1,
-            "transactionReceipt": transaction.jsonRepresentation.base64EncodedString()
+            "transactionReceipt": transaction.jsonRepresentation.base64EncodedString(),
+            "jwsRepresentation": jws
         ]
     }
     

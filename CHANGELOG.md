@@ -1,3 +1,6 @@
+## 1.0.6
+- Introduced a new property jwsRepresentation in the PurchasedItem class.
+
 ## 1.0.5
 - Fix: handle parsing exception for DiscountIOS.price
 

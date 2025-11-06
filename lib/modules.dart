@@ -259,6 +259,7 @@ class PurchasedItem {
   final DateTime? transactionDate;
   final String? transactionReceipt;
   final String? purchaseToken;
+  final String? jwsRepresentation;
 
   // Android only
   final String? dataAndroid;
@@ -278,6 +279,7 @@ class PurchasedItem {
         transactionId = json['transactionId'] as String?,
         transactionDate = _extractDate(json['transactionDate']),
         transactionReceipt = json['transactionReceipt'] as String?,
+        jwsRepresentation = json['jwsRepresentation'] as String?,
         purchaseToken = json['purchaseToken'] as String?,
         dataAndroid = json['dataAndroid'] as String?,
         signatureAndroid = json['signatureAndroid'] as String?,
@@ -299,6 +301,7 @@ class PurchasedItem {
         'transactionId: $transactionId, '
         'transactionDate: ${transactionDate?.toIso8601String()}, '
         'transactionReceipt: $transactionReceipt, '
+        'jwsRepresentation: $jwsRepresentation, '
         'purchaseToken: $purchaseToken, '
 
         /// android specific
