@@ -1,3 +1,7 @@
+## 1.0.7
+- Improved post-purchase handling on iOS by **retrying transaction fetch after a successful purchase** to account for Sandbox and StoreKit timing delays.
+- This helps reduce false `Transaction not found` errors caused by delayed entitlement propagation, especially for auto-renewable subscriptions.
+
 ## 1.0.6
 - Introduced a new property jwsRepresentation in the PurchasedItem class.
 

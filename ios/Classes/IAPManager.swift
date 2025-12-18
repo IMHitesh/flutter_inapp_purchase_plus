@@ -7,6 +7,9 @@ final class IAPManager {
     static let shared = IAPManager()
     private var products: [Product] = []
     private var appStoreInitiatedProduct: Product?
+    private let maxPurchaseCheck: Int = 3
+    private let retryInterval: TimeInterval = 2.0
+    private var currentPurchaseCheckCount: Int = 0
     var isProductLoaded: Bool = false
     var channel: FlutterMethodChannel!
     
@@ -138,8 +141,8 @@ extension IAPManager {
                             }
                             
                             /// Here we add currentEntitlements so we can re-verify about purchase and unlock premium according that
-                            self.getActiveTransaction(success: { allPurchasedProductIds in
-                                if allPurchasedProductIds.contains(where: { $0.productID == product.id }) {
+                            self.checkForTransactionAvailablity(transaction: transaction) { isValid in
+                                if isValid {
                                     Task {
                                         let jsonString = self.getJsonString(await self.getTransactionJson(from: transaction, jws: verification.jwsRepresentation))
                                         DispatchQueue.main.async {
@@ -149,23 +152,14 @@ extension IAPManager {
                                 } else {
                                     DispatchQueue.main.async {
                                         IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
-                                            "responseCode": 400,
-                                            "debugMessage": "Product ID mismatch after verification.",
-                                            "code": "E_USER_ERROR",
-                                            "message": "Oops! Payment information invalid. Did you enter your password correctly?"
+                                            "responseCode": 404,
+                                            "debugMessage": "Transaction not found.",
+                                            "code": "E_TRANSACTION_NOT_FOUND",
+                                            "message": "We couldn't verify your purchase. Please try again later."
                                         ]))
                                     }
                                 }
-                            }, failure: { error in
-                                DispatchQueue.main.async {
-                                    IAPManager.shared.channel.invokeMethod("purchase-error", arguments: IAPManager.shared.getJsonString([
-                                        "responseCode": 404,
-                                        "debugMessage": "Transaction not found.",
-                                        "code": "E_TRANSACTION_NOT_FOUND",
-                                        "message": "We couldn't verify your purchase. Please try again later."
-                                    ]))
-                                }
-                            })
+                            }
                         }
                         break
                     case .unverified(_,let error):
@@ -224,6 +218,30 @@ extension IAPManager {
                 }
             }
         }
+    }
+    
+    func checkForTransactionAvailablity(transaction: Transaction, isValidTransaction: @escaping ((Bool) -> Void)) {
+        func retry() {
+            if self.currentPurchaseCheckCount < self.maxPurchaseCheck {
+                self.currentPurchaseCheckCount += 1
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.retryInterval) {
+                    self.checkForTransactionAvailablity(transaction: transaction, isValidTransaction: isValidTransaction)
+                }
+            } else {
+                self.currentPurchaseCheckCount = 0
+                isValidTransaction(false)
+            }
+        }
+        
+        self.getActiveTransaction(success: { allPurchasedProductIds in
+            if allPurchasedProductIds.contains(where: { $0.productID == transaction.productID }) {
+                isValidTransaction(true)
+            } else {
+                retry()
+            }
+        }, failure: { error in
+            retry()
+        })
     }
 }
 
